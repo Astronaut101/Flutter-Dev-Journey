@@ -56,6 +56,44 @@ In profile mode, the ability to debug is maintained - enough to profile your app
 
 [Intro to widgets](https://docs.flutter.dev/development/ui/widgets-intro)
 
-According to the Flutter's documentation, The central idea of the widgets page is to be able to build your UI out of widgets. Widgets describe what their view should look like given their current configuration and state. When a widget's state changes, the widget rebuilds its description, which the framework diffs against the previous description in order to determine the minimal changes needed in the underlying render tree to transition from one state to the next.
+According to the Flutter's documentation, the central idea of the widgets page is to be able to build your UI out of widgets. Widgets describe what their view should look like given their current configuration and state. When a widget's state changes, the widget rebuilds its description, which the framework diffs against the previous description in order to determine the minimal changes needed in the underlying render tree to transition from one state to the next.
 
-#### [TBC] Handling Gestures from the Flutter Getting Started Docs
+----
+
+## Following [FreeCodeCamp's Tutorial for Flutter Development](https://youtu.be/VPvVD8t02U8)
+
+### Setting-up your Developer Account
+
+* iOS - Different Dev Accounts (individual/company - liability)
+* Google - Different Dev Accounts
+
+#### Chapter 2 - Setup
+
+* Flutter is a rich UI framework developed by Google
+* Being able to write code that targets specific frameworks
+* Dart is the language that powers Flutter
+* DartPad allows us to write / test Dart Code right in the browser
+
+#### UPDATE: Android SDK and the things needed to run emulations are now fixed
+
+#### Chapter 3 - Dart Exploration
+
+```[dart]
+flutter create <your_repository_name>
+```
+
+Keywords:
+
+[Keywords Dev Guide](https://dart.dev/guides/language/language-tour#keywords)
+
+* Avoid using the keywords as identifiers. Keywords such as hide, async, on, sync are contextual keywords, which have meaning only in specific places. They're valid identifiers everywhere.
+
+* Words such as set, required, part, deferred, dynamic, covariant, extension, external, as, abstract, operator, typedef, part, operator, required, mixin, library, late, interface, import, Function, static, implements. These keywords are valid identifiers in most places, but they can't be used as class or type names, or as import prefixes
+
+* Words such as yield and await are limited reserved words related to asynchrony support. We can't use await or yield as an identifier in any function body marked with async, async*, or sync*
+
+[Data Types](https://api.dart.dev/stable)
+
+Constants - Compile-time vs Run-time
+
+#### [TBC] Dart Control statements and collections
