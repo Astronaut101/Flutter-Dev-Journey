@@ -96,4 +96,93 @@ Keywords:
 
 Constants - Compile-time vs Run-time
 
-#### [TBC] Dart Control statements and collections
+#### Dart Control statements and collections
+
+```[dart]
+// If - else condition statements in Flutter
+void test() {
+  final name = 'Foo';
+  if (name == 'Foo') {
+    print('Yes this is foo');
+  } else if (name != 'Bar') {
+    print('This value is not bar');
+  } else {
+    print('I don\'t what this is');
+  }
+}
+```
+
+#### Operators
+
+```[dart]
+// Exploring Operators - (+. -. /, *, ==)
+void test() {
+  var age = 20;
+  final ageMinusOne = --age; // prefix operator
+  final halfOfAge = age / 2;
+  final doubleTheAge = age * 2;
+
+  var name = 'Foo Bar Baz ';
+  final nameTimes100 = name * 100;
+  print(nameTimes100);
+
+  print(halfOfAge);
+  print(doubleTheAge);
+  print(ageMinusOne);
+}
+```
+
+#### Lists in Dart [Explore more in the dart.dev documentation]
+
+```[dart]
+void test() {
+  var names = ['Foo', 'Bar', 'Baz'];
+  var planets = ['Earth', 'Pluto', 'Venus'];
+  final foo = names[2];
+  final lengthOfList = names.length;
+  planets.add('Jupiter'); // Adding elements to a Sequence container
+
+  print(names.length);
+  print(planets.length);
+  print(lengthOfList);
+  print(foo);
+}
+```
+
+#### Sets in Dart
+
+```[dart]
+void setTest() {
+  var dessert = {'Chocolate', 'Cheesecake'};
+  const burger = {'Bacon cheeseburger'};
+  const things = {'foo', 1};
+  dessert.add('Ice cream');
+  dessert.add('Cheesecake');
+  burger.add('Bacon cheeseburger');
+
+  // print(burger);
+  // print(dessert);
+  // print(things);
+}
+```
+
+#### Maps in Dart - [Explore the dart.dev documentation]
+
+Same as dictionary data mapping structure to hold key-value pairs of information
+
+```[dart]
+// Maps in Dart
+void test() {
+  const person = {
+    'age': 20,
+    'name': 'foo',
+  };
+  print(person);
+  person['name'] = 'FOOOOO';
+  print(person);
+  person['lastname'] = 'BazBaz';
+  print(person);
+}
+```
+
+#### [TBC] Sound Null-safety in Dart

@@ -1,27 +1,97 @@
 import 'package:flutter/material.dart';
 
-// Variable Declartion by using const
-const age = 28;
-// Compile-time constants ---> values that cannot change the time by the time
-// you declare your values.
-const twiceTheAge = age * 2;
-
-String getFullName(String firstName, String lastName) {
-  return '$firstName $lastName'; // formatting strings by using the '$' indicator
-}
-
-// Another shorthand way to create functions.
-String getFullName2(String fullName) => '$fullName';
-
-String printMyName() {
-  return '';
-}
-
 void main() {
   // var name = 'Clarence';
   // final name = 'Foo';
   runApp(const MyApp());
 }
+
+// Variable Declartion by using const
+// const age = 28;
+// Compile-time constants ---> values that cannot change the time by the time
+// you declare your values.
+// const twiceTheAge = age * 2;
+
+// String getFullName(String firstName, String lastName) {
+//   return '$firstName $lastName'; // formatting strings by using the '$' indicator
+// }
+
+// Another shorthand way to create functions.
+// String getFullName2(String fullName) => '$fullName';
+
+// String printMyName() {
+//   return '';
+// }
+
+// Exploring Operators - (+. -. /, *, ==)
+// void test() {
+//   var age = 20;
+//   final ageMinusOne = --age; // prefix operator
+//   final halfOfAge = age / 2;
+//   final doubleTheAge = age * 2;
+
+//   var name = 'Foo Bar Baz ';
+//   final nameTimes100 = name * 100;
+//   print(nameTimes100);
+
+//   print(halfOfAge);
+//   print(doubleTheAge);
+//   print(ageMinusOne);
+// }
+
+// Lists in Dart
+// void test() {
+//   var names = ['Foo', 'Bar', 'Baz'];
+//   var planets = ['Earth', 'Pluto', 'Venus'];
+//   final foo = names[2];
+//   final lengthOfList = names.length;
+//   planets.add('Jupiter'); // Adding elements to a Sequence container
+
+//   print(names.length);
+//   print(planets.length);
+//   print(lengthOfList);
+//   print(foo);
+// }
+
+// Sets in Dart
+// void setTest() {
+//   var dessert = {'Chocolate', 'Cheesecake'};
+//   const burger = {'Bacon cheeseburger'};
+//   const things = {'foo', 1};
+//   dessert.add('Ice cream');
+//   dessert.add('Cheesecake');
+//   burger.add('Bacon cheeseburger');
+
+//   // print(burger);
+//   // print(dessert);
+//   // print(things);
+// }
+
+// Maps in Dart
+void test() {
+  var person = {
+    'age': 20,
+    'name': 'foo',
+  };
+
+  print(person);
+  person['name'] = 'FOOOOO';
+  print(person);
+  person['lastname'] = 'BazBaz';
+  print(person);
+}
+
+// If - else condition statements in Flutter
+// void test() {
+//   final name = 'Foo';
+//   if (name == 'Foo') {
+//     print('Yes this is foo');
+//   } else if (name != 'Bar') {
+//     print('This value is not bar');
+//   } else {
+//     print('I don\'t what this is');
+//   }
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -29,6 +99,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    test(); // Invoking our function to present to our debug console
     // print(getFullName('Clarence', 'Reyes'));
     return MaterialApp(
       title: 'Flutter Demo',
