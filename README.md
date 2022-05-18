@@ -185,4 +185,103 @@ void test() {
 }
 ```
 
-#### [TBC] Sound Null-safety in Dart
+#### [Sound Null-safety in Dart](https://dart.dev/null-safety)
+
+In the previous Dart codebases (Dart v.2.0 and below), Dart developers still need to write code from scratch in order to Write dart code that are null safe.
+
+##### Making any type nullable
+
+Using the question mark after the data type such as "String?"
+
+```[dart]
+void testNull() {
+  String? fullName =
+      null; // the '?' signifies that a certain variable can contain null values
+  String? lastName =
+      null; // '?' signifies that the variable signifies that it is nullable
+  lastName = 'Reyes';
+  fullName = 'Clarence Vinzcent Reyes';
+
+  // This indicate that the list doesn't expect to have a null value inside of your list
+  List<String>? names = ['Foo', 'Bar', null];
+
+  // This indicate that the list is expecting an "Optional" nullable data type
+  List<String?>? nullableNames = ['Clarence', 'Samantha', 'Camill', null];
+  nullableNames = null;
+}
+```
+
+#### Cherry-picking non-null values
+
+Using the ?? operator
+
+```[dart]
+void testNonNull() {
+  const String? firstBasket = null;
+  const String? secondBasket = null;
+  const String? thirdBasket = 'Baz';
+
+  if (firstBasket != null) {
+    print("first basket is the first non-null value");
+  } else if (secondBasket != null) {
+    print("second basket is the first non-null value");
+  } else if (thirdBasket != null) {
+    print("third basket is the first non-null value");
+  } else {
+    print("all baskets found to be empty!");
+  }
+
+  // '??' infix operators ---> Indicating to check if the left value is 'null',
+  // then I will be picking the value on the right side.
+  const firstNonNullValue = firstBasket ?? secondBasket ?? thirdBasket;
+}
+```
+
+In using the '??' operator, it searches for any non-nullable variable to its right and if it sees that their is a nullable type to its left, then it would go access the non-null right-hand variable type
+
+#### Null-aware assignment operator
+
+Using ??= in which it checks and resolve to see if a certain variable is null
+
+```[dart]
+void testNullAware(
+    String? firstOrder, String? secondOrder, String? thirdOrder) {
+  String? name = firstOrder;
+  name ??= secondOrder;
+  name ??= thirdOrder;
+
+  print(name);
+}
+```
+
+#### Conditional Invocation
+
+Using ?. that makes the variables aware that it can accept null values
+
+```[dart]
+void conditionalInvocation(List<String>? names) {
+  // List<String>? names = null;
+
+  // Old way of checking if the instantiated variable is null in order to proceed
+  // to processing the next stage of the program.
+  // final int length;
+  // if (names != null) {
+  //   final length = names.length; // type promotion
+  // } else {
+  //   length = 0;
+  // }
+
+  // New way ---> Checks if the variable passed is not null or doesn't contain
+  // any null values, then we access its length, otherwise we access the next non-
+  // null value.
+  final length = names?.length ?? 0;
+  // conditionally invocating if we are adding a null value then we still add that to our data container/collection
+  names?.add('Chicken');
+  print(length);
+  print(names);
+}
+```
+
+#### Reading Assignment ---> Understanding more about [null-safety in dart](https://dart.dev/null-safety/understanding-null-safety)
+
+### [TBC] Chapter 6 - OOP, Dart Enumerations, Functions

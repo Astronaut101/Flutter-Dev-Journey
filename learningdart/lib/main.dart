@@ -81,6 +81,82 @@ void test() {
   print(person);
 }
 
+// Null-Safety and Null-aware operators in dart
+void testNull() {
+  String? fullName =
+      null; // the '?' signifies that a certain variable can contain null values
+  String? lastName =
+      null; // '?' signifies that the variable signifies that it is nullable
+  lastName = 'Reyes';
+  fullName = 'Clarence Vinzcent Reyes';
+
+  // This indicate that the list doesn't expect to have a null value inside of your list
+  // List<String>? names = ['Foo', 'Bar', null];
+
+  // This indicate that the list is expecting an "Optional" nullable data type
+  // Optional list of strings that are nullable
+  List<String?>? nullableNames = ['Clarence', 'Samantha', 'Camill', null];
+  nullableNames = null;
+}
+
+void testNonNull() {
+  const String? firstBasket = null;
+  const String? secondBasket = null;
+  const String? thirdBasket = 'Baz';
+
+  if (firstBasket != null) {
+    print("first basket is the first non-null value");
+  } else if (secondBasket != null) {
+    print("second basket is the first non-null value");
+  } else if (thirdBasket != null) {
+    print("third basket is the first non-null value");
+  } else {
+    print("all baskets found to be empty!");
+  }
+
+  // '??' infix operators ---> Indicating to check if the left value is 'null',
+  // then I will be picking the value on the right side.
+  const firstNonNullValue = firstBasket ?? secondBasket ?? thirdBasket;
+}
+
+void testNonNullOperator(
+    String? firstName, String? middleName, String? lastName) {
+  final firstNonNullValue = firstName ?? middleName ?? lastName;
+}
+
+void testNullAware(
+    String? firstOrder, String? secondOrder, String? thirdOrder) {
+  String? name = firstOrder;
+  name ??= secondOrder;
+  name ??= thirdOrder;
+
+  print(name);
+}
+
+String conditionalInvocation(List<String>? names) {
+  // List<String>? names = null;
+
+  // Old way of checking if the instantiated variable is null in order to proceed
+  // to processing the next stage of the program.
+  // final int length;
+  // if (names != null) {
+  //   final length = names.length; // type promotion
+  // } else {
+  //   length = 0;
+  // }
+
+  // New way ---> Checks if the variable passed is not null or doesn't contain
+  // any null values, then we access its length, otherwise we access the next non-
+  // null value.
+  final length = names?.length ?? 0;
+  // conditionally invocating if we are adding a null value then we still add that to our data container/collection
+  names?.add('Chicken');
+  // print(length);
+  // print(names);
+
+  return 'Here are your invited list of names: $names. We have invited $length';
+}
+
 // If - else condition statements in Flutter
 // void test() {
 //   final name = 'Foo';
@@ -99,8 +175,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    test(); // Invoking our function to present to our debug console
+    // testNull();
+    // test(); // Invoking our function to present to our debug console
     // print(getFullName('Clarence', 'Reyes'));
+    testNullAware(null, null, 'Burger Steak');
+    print(conditionalInvocation(['Samantha', 'Pamela', 'Sally']));
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
