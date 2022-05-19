@@ -169,17 +169,62 @@ String conditionalInvocation(List<String>? names) {
 //   }
 // }
 
+// Without Null safety:
+bool isEmpty(String string) => string.length == 0;
+
+// Using Null safety:
+makeCoffee(String coffee, [String? dairy]) {
+  if (dairy != null) {
+    print('$coffee with $dairy');
+  } else {
+    print('Black $coffee');
+  }
+}
+
+// Hypothetical unsound null safety:
+// bad(String? maybeString) {
+//   print(maybeString.length);
+// }
+
+// Another hypothetical unsound null safety:
+requireStringNotNull(String definitelyString) {
+  print(definitelyString.length);
+}
+
+// Without null safety : Implicit Downcasts
+requireStringNotObject(String definitelyString) {
+  print(definitelyString.length);
+}
+
+// Another example of without null safety:
+// List<int> filterEvens(List<int> ints) {
+//   return ints.where((n) => n.isEven);
+// }
+
+// An example that has null safety with implicit downcast
+List<int> filterEvensDowncast(List<int> ints) {
+  return ints.where((n) => n.isEven) as List<int>;
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    // testNull();
-    // test(); // Invoking our function to present to our debug console
-    // print(getFullName('Clarence', 'Reyes'));
-    testNullAware(null, null, 'Burger Steak');
-    print(conditionalInvocation(['Samantha', 'Pamela', 'Sally']));
+    // testNullAware(null, null, 'Burger Steak');
+    // print(conditionalInvocation(['Samantha', 'Pamela', 'Sally']));
+    // isEmpty(null);
+    makeCoffee('Ethiopian coffee', 'almond milk');
+    // bad(null); // Eventually this would throw an "NoSuchMethodError" exception"
+
+    // String? maybeString = null; // Or not!
+    // requireStringNotNull(maybeString); // The function call here is not safe
+
+    // With null safety, we are removing implicit downcasts entirely!!
+    // Object maybeAnotherString = 'it is';
+    // requireStringNotObject(maybeAnotherString);
+    // requireStringNotObject(maybeAnotherString as String);
 
     return MaterialApp(
       title: 'Flutter Demo',

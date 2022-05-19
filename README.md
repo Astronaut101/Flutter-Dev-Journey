@@ -282,6 +282,110 @@ void conditionalInvocation(List<String>? names) {
 }
 ```
 
-#### Reading Assignment ---> Understanding more about [null-safety in dart](https://dart.dev/null-safety/understanding-null-safety)
+### [Understanding Null Safety](https://dart.dev/null-safety/understanding-null-safety)
+
+* Further reading resources with regards to Dart's Type System:
+
+1. [Sound Static Type System](https://dart.dev/null-safety/understanding-null-safety)
+
+This has been plaguing many programmers in which Kotlin, Swift, Rust and other languages all have their own answers to what has become a wide problem.
+
+```[dart]
+// Without Null safety:
+bool isEmpty(String string) => string.length == 0;
+
+main() {
+  isEmpty(null);
+}
+```
+
+When the above code is being compiled without null safety, it throws a *NoSuchMethodError* exception on the call to *.length*. The null value is an instance of the *Null* class, and *Null* has no "length" getter. Runtime failures suck!
+
+In Dart, there are a various ways a language can tackle null reference errors each have their pros and cons. These following principles guided the choices we made.
+
+1. *Code should be safe by default*
+2. *Null Safe code should be easy to write*
+3. *The resulting null safe code should be fully sound*
+
+One caveat: We only guarantee soundness in Dart programs that are fully null safe.
+
+In the context of having 'NULL' values, there's nothing wrong with it. On the contrary, it's really useful to be able to represent the absence of a value. Building support for a special "absent" value directly into the language makes working with absence flexible and usable. It underpins optional parameters, the handy '?.' null-aware operator, and default initialization. It is not *null* that is bad, it is having *null* go where you don't expect it that causes problems.
+
+#### Nullability in the Type System
+
+* In the dart compiler, before Null safety comes into play, the static type system allowed the value *null* to flow into expressions of any of those types. In type theory lingo, the *Null* type was treated as a subtype of all types:
+
+* If the type is *List*, you can call *.add()* or *[]* on it. If it's *int*, we can call *+*. But the *null* value doesn't define any of those methods. Allowing *null* to flow into an expression of some other type means any of those operations can fail. This is really the crux of null reference errors - every failure comes from trying to look up a method or property on *null* that it doesn't have.
+
+#### Non-nullable and nullable types
+
+According to the Google's documentation of *Dart*, Null safety eliminates that problem at the root by changing the type hierarchy. The *Null* type still exists, but it's no longer a subtype of all types. Instead, the type hierarchy is being removed away from Dart's objects
+
+Since *Null* is no longer a subtype, no type except the special *Null* class permits tha value *null*. We've made all types __non-nullable__ by __default__.
+
+```[dart]
+// Using Null safety:
+makeCoffee(String coffee, [String? dairy]) {
+  if (dairy != null) {
+    print('$coffee with $dairy');
+  } else {
+    print('Black $coffee');
+  }
+}
+```
+
+In the above code, we want to allow the *dairy* parameter to accept any string, or the value null, but nothing else. To express that, we give *dairy* a __nullable type__ by slapping it with '?' at the end of the underlying base type *String*. Under the hood, it is essentially defining a *union* of the underlying type and the *Null* type. So *String?* would be a shorthand for *String|Null* if Dart had full-featured union types.
+
+#### Using nullable types
+
+If we have expression with a nullable type, what can we with the result? Since our principle is safe by default, the answer is not much. This won't let us call methods of the underlying type on it because those might fail if the value is *null*:
+
+The only methods and properties we can safely access are ones defined by both the underlying type and the *Null* class. That's just *toString()*, *==*, and *hashCode*. We can still use nullable types as map keys, store them in sets, compare them to other values, and use them in string interpolation, but that's about it.
+
+It's always safe to pass a non-nullable type to something expecting a nullable type. If a function accepts *String?* then passing a *String* is allowed because it won't cause any problems. We model it by making every nullable type a supertype of its underlying type. We can also pass *null* to something expecting a nullable type, so *Null* is also a subtype of every nullable type.
+
+```[dart]
+// Another hypothetical unsound null safety:
+requireStringNotNull(String definitelyString) {
+  print(definitelyString.length);
+}
+
+// Without null safety : Implicit Downcasts
+requireStringNotObject(String definitelyString) {
+  print(definitelyString.length);
+}
+
+main () {
+  
+    // String? maybeString = null; // Or not!
+    requireStringNotNull(maybeString); // The function call here is not safe
+
+    // The code block below indicates that the compiler silently inserts an "as String" cast on the argument to "requireStringNotObject()"
+    // With null safety, we are removing implicit downcasts entirely!!
+    Object maybeAnotherString = 'it is';
+    requireStringNotObject(maybeAnotherString);
+    requireStringNotObject(maybeAnotherString as String);
+}
+```
+
+Another code example below illustrates what would happen if there would be no implicit downcasting.
+
+```[dart]
+// Another example of without null safety:
+List<int> filterEvens(List<int> ints) {
+  return ints.where((n) => n.isEven);
+}
+```
+
+Eventhough the code above compiles, it would still throw an exception at runtime when it tries to cast that *Iterable* to the *List* type that *filterEvens* declares it returns. To avoid an exception being thrown, we must be able to downcast implicitly by stating what variable type we would downcast
+
+```[dart]
+// With Implicit downcasts
+List<int> filterEvens(List<int> ints) {
+  return ints.where((n) => n.isEven) as List<int>;
+}
+```
+
+#### [TBC] Top and Bottom
 
 ### [TBC] Chapter 6 - OOP, Dart Enumerations, Functions
