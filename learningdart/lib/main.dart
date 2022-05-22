@@ -201,9 +201,57 @@ requireStringNotObject(String definitelyString) {
 //   return ints.where((n) => n.isEven);
 // }
 
+// Invalid Returns wherein older Dart version is accepting functions without any
+// return calls.
+//
+// Downright wrong and unsafe when your function is a sound non-nullable types.
+//
+// Without null safety:
+// String missingReturn() {
+//   // No return.
+// }
+
 // An example that has null safety with implicit downcast
 List<int> filterEvensDowncast(List<int> ints) {
   return ints.where((n) => n.isEven) as List<int>;
+}
+
+// Using Sound Null safety:
+String alwaysReturns(int n) {
+  if (n == 0) {
+    return 'zero';
+  } else if (n < 0) {
+    throw ArgumentError('Negative values not allowed.');
+  } else {
+    if (n > 1000) {
+      return 'big';
+    } else {
+      return n.toString();
+    }
+  }
+}
+
+class SomeFoo {
+  int atDeclaration = 0;
+  int secondDeclaration;
+  int thirdDeclaration;
+
+  SomeFoo(this.secondDeclaration) : thirdDeclaration = 0;
+}
+
+// Without null safety:
+bool isEmptyList(Object object) {
+  if (object is! List) return false;
+  return object.isEmpty; // <--- Error!
+}
+
+// With (or without) null safety
+bool isEmptyList02(Object object) {
+  if (object is List) {
+    return object.isEmpty;
+  } else {
+    return false;
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -212,19 +260,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    // testNullAware(null, null, 'Burger Steak');
-    // print(conditionalInvocation(['Samantha', 'Pamela', 'Sally']));
-    // isEmpty(null);
-    makeCoffee('Ethiopian coffee', 'almond milk');
-    // bad(null); // Eventually this would throw an "NoSuchMethodError" exception"
-
-    // String? maybeString = null; // Or not!
-    // requireStringNotNull(maybeString); // The function call here is not safe
-
-    // With null safety, we are removing implicit downcasts entirely!!
-    // Object maybeAnotherString = 'it is';
-    // requireStringNotObject(maybeAnotherString);
-    // requireStringNotObject(maybeAnotherString as String);
+    print(alwaysReturns(0));
+    print(isEmptyList('Check list'));
 
     return MaterialApp(
       title: 'Flutter Demo',

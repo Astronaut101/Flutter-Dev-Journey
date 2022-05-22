@@ -386,6 +386,95 @@ List<int> filterEvens(List<int> ints) {
 }
 ```
 
-#### [TBC] Top and Bottom
+#### Top and Bottom
+
+Since *Object* is non-nullable now, it is now longer a top type. *Null* is not a subtype of it. Dart has no named top type. If you need a top type, you want *Object?*. Likewise, *Null* is no longer the bottom type. If it was, everything would still be nullable. Instead, we've added a new bottom type named *Never*.
+
+In practice, this means:
+
+* If we want to indicate that we allow a value of any type, we use *Object?* instead of *Object*. In fact, it becomes pretty unusual to use *Object* since that type means "could be any possible value except this one weirdly prohibited value *null*".
+* On the rare occasion that you need a bottom type, use *Never* instead of *Null*. If we don't know if we need a bottom type, we probably don't need it.
+
+#### Ensuring Correctness
+
+Getting rid of implicit downcasts and removing *Null* as a bottom type covers all of the main places that types flow through a program across assignments and from arguments into parameters on function calls.
+
+##### Invalid Returns
+
+In sound non-nullable types, we must make sure that we must return a specific data type in which the compiler would throw an error if a function with a non-nullable return type doesnt reliably return a value.
+
+##### Uninitialized Variables
+
+If we don't give the variable an explicit initializer, Dart default initializes the variable with *null*. We have also to tighten things up for non-nullabel variables:
+
+* *Top level variable and static field declarations must have an initializer* - The only safe option is to require the declaration itself to have an initializing expression that produces a value of the right type.
+
+```[dart]
+// Using null safety
+int topLevel = 0;
+
+class SomeClass {
+  static int staticField = 0;
+}
+```
+
+* *Instance fields must either have an initializer at the declaration, using an initializing format, or be initialized in the constructor's initialization list.* - In other words, as long as the field has a value before you reach the constructor body, you're good.
+
+```[dart]
+// Using null safety
+class SomeClass {
+  int atDeclaration = 0;
+  int initializingFormal;
+  int initializationList;
+
+  SomeClass(this.initializingFormal)
+  : initialization list = 0;
+}
+```
+
+* A non-nullable local variable doesn't need to have an initializer - *a local variable must be definitely assigned before it is used.*
+
+```[dart]
+// Using null safety:
+int tracingFibonacci(int n) {
+  int result;
+  if (n < 2) {
+    result = n;
+  } else {
+    result = tracingFibonacci(n - 2) + tracingFibonacci(n - 1);
+  }
+
+  print(result);
+  return result;
+}
+```
+
+* *Optional Parameters must have a default value*
+
+#### Flow Analysis
+
+In Dart, control flow analysis makes it visible in which Dart has a dash of flow analysis in the form of __type promotion__.
+
+```[dart]
+// With (or without) null safety:
+bool isEmptyList(Object object) {
+  if (object is List) {
+    return object.isEmpty; // <--- OK
+  } else {
+    return false;
+  }
+}
+```
+
+#### Reachability Analysis
+
+```[dart]
+bool isEmptyList(Object object) {
+  if (object is! List) return False;
+  return object.isEmpty;
+}
+```
+
+#### [TBC] Never for unreachable code
 
 ### [TBC] Chapter 6 - OOP, Dart Enumerations, Functions
